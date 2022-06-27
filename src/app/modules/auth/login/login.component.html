@@ -1,0 +1,56 @@
+<div class="body-login">
+  <div class="main" style="height: 600px;">
+    <input type="checkbox" id="chk" />
+    <div class="signup p-8 relative w-full h-full flex justify-center items-center">
+      <form [formGroup]="loginForm" class="sign-form validate-form w-full h-full p-8">
+        <label for="chk" class="sig mb-4">
+          <div style="width: 350px">
+            <img src="/assets/images/ebazar.svg" />
+          </div>
+        </label>
+
+        <h4 class="text-2xl font-bold text-gray-500 text-center mb-4">
+          Seller Panel&nbsp;
+          <span style="color: #dd135b;">Login</span>
+        </h4>
+
+        <div class="sig divider" style="margin: 0 auto 45px;"></div>
+
+        <div class="user-box">
+          <input
+            type="text"
+            formControlName="user"
+            title="Enter Email or Phone"
+            required
+          />
+          <label>Email or Phone</label>
+        </div>
+
+        <div class="user-box">
+          <input
+            formControlName="password"
+            type="password"
+            title="Enter password"
+            required
+          />
+          <label>Password</label>
+        </div>
+
+        <button class="login-btn" [disabled]="!loginForm.valid" (click)="login()">
+          <span>
+            <i *ngIf="loading" class="fas fa-sync fa-spin mr-1"></i>
+            Login
+          </span>
+          <div class="liquid"></div>
+        </button>
+
+        <div class="sig divider" style="margin: 35px auto 25px;"></div>
+
+        <div class="text-center text-gray-500 font-semibold text-lg">
+          <span>Don't have an Account?&nbsp;&nbsp;</span>
+          <a routerLink="/register" class="font-bold text-center" style="color: #dd135b;">Signup!</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

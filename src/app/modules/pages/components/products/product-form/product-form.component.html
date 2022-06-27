@@ -1,0 +1,374 @@
+<div
+  class="flex-grow flex overflow-x-hidden"
+>
+  <div
+    class="flex-grow bg-white dark:bg-gray-900 overflow-y-auto"
+    style="margin: 15px; transition: width 0.8s"
+  >
+    <div
+      class="sm:px-7 sm:py-4 px-4 py-2 flex flex-col w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 sticky top-0 z-10"
+    >
+      <div class="flex w-full items-center">
+        <div
+          class="flex items-center text-2xl text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-600 font-semibold"
+        >
+          Add Product
+        </div>
+      </div>
+    </div>
+    <div
+      class="sm:p-5 p-3 shadow border-b border-t border-gray-200 table-scroll"
+    >
+      <div class="flex flex-col">
+        <div class="align-middle inline-block min-w-full">
+          <form [formGroup]="productForm" autocomplete="off">
+            <section class="fieldset my-10">
+              <h1 class="legend">Basic Information</h1>
+
+              <div class="grid grid-cols-12 p-10">
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Images</label>
+                </div>
+                <div class="col-span-10 my-3">
+                  <div class="bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md">
+                    <ng-container *ngIf="formType === 'Create' else updateImageBlock">
+                      <app-multi-image-picker
+                        (removeImage)="removeImage($event)"
+                        (imagePick)="onImagePicked($event)"
+                      ></app-multi-image-picker>
+                    </ng-container>
+                    <ng-template #updateImageBlock>
+                      <app-multi-image-picker
+                        [photo]="productForm.get('productImages').value"
+                        (imagePick)="onImagePicked($event)"
+                      ></app-multi-image-picker>
+                    </ng-template>
+                  </div>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Name</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <input
+                      nz-input
+                      class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+                      formControlName="productName"
+                      placeHolder="Please Enter Product Name!"
+                      autocomplete="off"
+                      [ngClass]="{
+                        error:
+                          productForm.controls['productName'].dirty &&
+                          productForm.controls['productName'].touched &&
+                          productForm.controls['productName'].invalid
+                      }"
+                    />
+                  </nz-form-control>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Brand</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <input
+                      nz-input
+                      class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+                      formControlName="productBrand"
+                      placeHolder="Please Enter Product Brand!"
+                      autocomplete="off"
+                      [ngClass]="{
+                        error:
+                          productForm.controls['productBrand'].dirty &&
+                          productForm.controls['productBrand'].touched &&
+                          productForm.controls['productBrand'].invalid
+                      }"
+                    />
+                  </nz-form-control>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Price</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <input
+                      nz-input
+                      type="number"
+                      min="1"
+                      class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+                      formControlName="price"
+                      placeHolder="Please Enter Product Price!"
+                      [ngClass]="{
+                        error:
+                          productForm.controls['price'].dirty &&
+                          productForm.controls['price'].touched &&
+                          productForm.controls['price'].invalid
+                      }"
+                    />
+                  </nz-form-control>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Weight (In KGs)</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <input
+                      nz-input
+                      type="number"
+                      min="1"
+                      class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+                      formControlName="weight"
+                      placeHolder="Please Enter Product Weight!"
+                      [ngClass]="{
+                        error:
+                          productForm.controls['weight'].dirty &&
+                          productForm.controls['weight'].touched &&
+                          productForm.controls['weight'].invalid
+                      }"
+                    />
+                  </nz-form-control>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Color</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <nz-select
+                      formControlName="color"
+                      class="h-10 bg-white dark:text-white w-full text-xs rounded-md"
+                      nzPlaceHolder="Please Enter Product Color!">
+                      <nz-option
+                        *ngFor="let item of colorsList"
+                        [nzValue]="item"
+                        [nzLabel]="item"
+                      ></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Warranty</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <nz-select
+                      formControlName="warrantyType"
+                      class="h-10 bg-white dark:text-white w-full text-xs rounded-md"
+                      nzPlaceHolder="Please Enter Product Warranty!">
+                      <nz-option
+                        *ngFor="let item of warrantyTypeList"
+                        [nzValue]="item"
+                        [nzLabel]="item"
+                      ></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Delivery Price</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <input
+                      nz-input
+                      type="number"
+                      min="1"
+                      class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+                      formControlName="deliveryPrice"
+                      placeHolder="Please Enter Delivery Price!"
+                      [ngClass]="{
+                        error:
+                          productForm.controls['deliveryPrice'].dirty &&
+                          productForm.controls['deliveryPrice'].touched &&
+                          productForm.controls['deliveryPrice'].invalid
+                      }"
+                    />
+                  </nz-form-control>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Stock Quantity</label>
+                </div>
+                <div class="col-span-4 my-3">
+                  <nz-form-control>
+                    <input
+                      nz-input
+                      type="number"
+                      min="1"
+                      class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+                      formControlName="stockQuantity"
+                      placeHolder="Please Enter Stock Quantity!"
+                      [ngClass]="{
+                        error:
+                          productForm.controls['stockQuantity'].dirty &&
+                          productForm.controls['stockQuantity'].touched &&
+                          productForm.controls['stockQuantity'].invalid
+                      }"
+                    />
+                  </nz-form-control>
+                </div>
+              </div>
+            </section>
+
+            <section class="fieldset my-10">
+              <h1 class="legend">Advance Information</h1>
+
+              <div class="grid grid-cols-12 p-10">
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Categories</label>
+                </div>
+                <div class="col-span-10 my-3">
+                  <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+                  <input
+                    style="position: absolute"
+                    type="text"
+                    class="pl-3 h-9 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs"
+                    placeholder="Select Product Category"
+                    nz-popover
+                    nzPopoverTrigger="click"
+                    nzPopoverPlacement="bottomLeft"
+                    [nzPopoverTitle]="productCategoriesClose"
+                    [nzPopoverContent]="productCategoryTemplate"
+                    [(nzPopoverVisible)]="productCategoriesVisible"
+                    formControlName="productCategoriesLabel"
+                  />
+                </nz-input-group>
+                <ng-template #suffixIconButton>
+                  <span class="px-2 text-gray-400">
+                    <button class="h-9" nz-button nzType="primary" nzSearch>
+                      <i nz-icon nzType="calendar" style="vertical-align: 0"></i>
+                    </button>
+                  </span>
+                </ng-template>
+
+                <ng-template #productCategoriesClose>
+                  <a class="float-right" (click)="productCategoriesVisible = false"
+                    ><i nz-icon nzType="close" nzTheme="outline"></i
+                  ></a>
+                </ng-template>
+                <ng-template #productCategoryTemplate>
+                  <app-product-categories
+                    (modalVisible)="productCategoriesVisible = false"
+                    (categoriesSelected)="categoriesSelected($event)"
+                  >
+                  </app-product-categories>
+                </ng-template>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Features</label>
+                </div>
+                <div class="col-span-10 my-3">
+                  <nz-select
+                    nzShowSearch
+                    nzAllowClear
+                    [nzMaxTagCount]="3"
+                    [nzMaxTagPlaceholder]="tagFeaturePlaceHolder"
+                    nzMode="multiple"
+                    [nzDropdownRender]="renderFeatureTemplate"
+                    nzPlaceHolder="Add Product Features"
+                    class="h-10 bg-white dark:text-white w-full text-xs rounded-md"
+                    formControlName="productFeatures"
+                  >
+                    <nz-option *ngFor="let item of features" [nzLabel]="item" [nzValue]="item"></nz-option>
+                  </nz-select>
+                  <ng-template #renderFeatureTemplate>
+                    <nz-divider></nz-divider>
+                    <div class="container">
+                      <input type="text" nz-input #inputFeatureElement />
+                      <a class="add-item" (click)="addFeatureItem(inputFeatureElement)">
+                        <i nz-icon nzType="plus"></i>
+                        Add item
+                      </a>
+                    </div>
+                  </ng-template>
+                  <ng-template #tagFeaturePlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Product Tags</label>
+                </div>
+                <div class="col-span-10 my-3">
+                  <nz-select
+                    nzShowSearch
+                    nzAllowClear
+                    [nzMaxTagCount]="3"
+                    [nzMaxTagPlaceholder]="tagPlaceHolder"
+                    nzMode="multiple"
+                    [nzDropdownRender]="renderTagTemplate"
+                    nzPlaceHolder="Add Product Tags"
+                    class="h-10 bg-white dark:text-white w-full text-xs rounded-md"
+                    formControlName="productTags"
+                  >
+                    <nz-option *ngFor="let item of tags" [nzLabel]="item" [nzValue]="item"></nz-option>
+                  </nz-select>
+                  <ng-template #renderTagTemplate>
+                    <nz-divider></nz-divider>
+                    <div class="container">
+                      <input type="text" nz-input #inputTagElement />
+                      <a class="add-item" (click)="addTagItem(inputTagElement)">
+                        <i nz-icon nzType="plus"></i>
+                        Add item
+                      </a>
+                    </div>
+                  </ng-template>
+                  <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more selected</ng-template>
+                </div>
+              </div>
+            </section>
+
+            <section class="fieldset my-10">
+              <h1 class="legend">Detailed Description</h1>
+
+              <div class="grid grid-cols-12 p-10">
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Short Description</label>
+                </div>
+                <div class="col-span-10 my-10">
+                  <quill-editor formControlName="shortDescription"></quill-editor>
+                  <!-- <textarea
+                    nz-input
+                    rows="4"
+                    class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md resize-none"
+                    formControlName="shortDescription"
+                    placeHolder="Enter Short Description!"
+                  ></textarea> -->
+                </div>
+                <div class="col-span-2 flex items-center my-3 px-8">
+                  <label class="form-control-label text-sm text-gray-700 font-semibold">Long Description</label>
+                </div>
+                <div class="col-span-10 my-10">
+                  <quill-editor formControlName="longDescription"></quill-editor>
+                  <!-- <textarea
+                    nz-input
+                    rows="10"
+                    class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md resize-none"
+                    formControlName="longDescription"
+                    placeHolder="Enter Long Description!"
+                  ></textarea> -->
+                </div>
+              </div>
+            </section>
+
+            <div class="grid grid-cols-12">
+              <div class="col-span-10 mt-4 mb-2"></div>
+              <div class="col-span-2 mt-4 mb-2">
+                <button
+                  type="button"
+                  style="
+                    padding: 0.5rem;
+                    border: 1px solid #e97ba0;
+                    box-shadow: -1px 1px 5px 0px rgb(87 114 122);
+                  "
+                  class="transform motion-safe:hover:scale-110 font-semibold w-full h-10 text-white bg-gradient-to-r from-pink-500 to-orange-400 hover:bg-gradient-to-l focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-xs px-10 py-2 text-center"
+                  [disabled]="!productForm.valid"
+                  (click)="submitForm()"
+                >
+                  <span *ngIf="productLoading">
+                    <i nz-icon [nzType]="'loading'"></i>
+                  </span>
+                  <span *ngIf="formType === 'Create'">Save</span>
+                  <span *ngIf="formType === 'Update'">Update</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

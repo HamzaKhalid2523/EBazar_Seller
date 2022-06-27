@@ -1,0 +1,91 @@
+<div class="profileCard">
+  <form
+    class="form-horizontal"
+    [formGroup]="shopForm"
+    autocomplete="off"
+  >
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-2 flex items-center my-3 px-4">
+        <label class="form-control-label text-sm text-gray-700 font-semibold">Company Docs</label>
+      </div>
+      <div class="col-span-10 my-3">
+        <div class="bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md">
+          <app-multi-image-picker
+            (removeImage)="removeImage($event)"
+            (imagePick)="onImagePicked($event)"
+          ></app-multi-image-picker>
+        </div>
+      </div>
+      <div class="col-span-2 flex items-center my-3 px-4">
+        <label class="form-control-label text-sm text-gray-700 font-semibold">Company Logo</label>
+      </div>
+      <div class="col-span-10 my-3">
+        <div class="bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md">
+          <app-image-picker
+            (imagePick)="onLogoPicked($event)"
+          ></app-image-picker>
+        </div>
+      </div>
+      <div class="col-span-2 flex items-center my-3 px-4">
+        <label class="form-control-label text-sm text-gray-700 font-semibold">Compnay Name</label>
+      </div>
+      <div class="col-span-4 my-3">
+        <nz-form-control>
+          <input
+            nz-input
+            class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+            formControlName="companyName"
+            placeHolder="Please Enter Company Name!"
+            autocomplete="off"
+            [ngClass]="{
+              error:
+                shopForm.controls['companyName'].dirty &&
+                shopForm.controls['companyName'].touched &&
+                shopForm.controls['companyName'].invalid
+            }"
+          />
+        </nz-form-control>
+      </div>
+      <div class="col-span-2 flex items-center my-3 px-4">
+        <label class="form-control-label text-sm text-gray-700 font-semibold">Compnay Address</label>
+      </div>
+      <div class="col-span-4 my-3">
+        <nz-form-control>
+          <input
+            nz-input
+            class="h-10 bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md"
+            formControlName="companyAddress"
+            placeHolder="Please Enter Company Address!"
+            autocomplete="off"
+            [ngClass]="{
+              error:
+                shopForm.controls['companyAddress'].dirty &&
+                shopForm.controls['companyAddress'].touched &&
+                shopForm.controls['companyAddress'].invalid
+            }"
+          />
+        </nz-form-control>
+      </div>
+
+      <div class="col-span-10 mt-4 mb-2"></div>
+      <div class="col-span-2 mt-4 mb-2">
+        <button
+          type="button"
+          style="
+            padding: 0.5rem;
+            border: 1px solid #e97ba0;
+            box-shadow: -1px 1px 5px 0px rgb(87 114 122);
+          "
+          class="transform motion-safe:hover:scale-110 font-semibold w-full h-10 text-white bg-gradient-to-r from-pink-500 to-orange-400 hover:bg-gradient-to-l focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-xs px-10 py-2 text-center"
+          [disabled]="!shopForm.valid"
+          (click)="saveData()"
+        >
+          <span *ngIf="loading">
+            <i nz-icon [nzType]="'loading'"></i>
+          </span>
+          <span>Save</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

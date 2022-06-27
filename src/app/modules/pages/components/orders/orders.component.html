@@ -1,0 +1,357 @@
+<div
+  class="flex-grow flex overflow-x-hidden"
+  [style.height]="topMenuStatus ? '87vh' : '93vh'"
+  [style.transition]="topMenuStatus ? 'height 1s' : 'none'"
+>
+  <div
+    style="transition: width 0.8s"
+    [ngClass]="{
+      'w-48': filterDrawerVisible,
+      'xl:w-72': filterDrawerVisible,
+      'w-0': !filterDrawerVisible
+    }"
+    class="flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block hidden"
+  >
+    <div class="p-5">
+      <div class="ac">
+        <input class="ac-input" id="ac-3" name="ac-3" type="checkbox" checked />
+        <label class="ac-label" for="ac-3"
+          ><span
+            class="text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-600"
+            >Options</span
+          ></label
+        >
+        <article class="ac-text">
+          <div class="ac-sub" style="padding: 10px 0 10px 10px">
+            <button
+              style="
+                border: 1px solid #3281a1;
+                box-shadow: -1px 1px 5px 0px rgb(87 114 122);
+                width: 88%;
+                margin: 0 6%;
+              "
+              class="font-semibold w-full h-9 transform motion-safe:hover:scale-110 text-white bg-gradient-to-r from-green-500 to-cyan-600 hover:bg-gradient-to-l focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-xs px-10 py-2 text-center"
+              (click)="getAllData()"
+            >
+              Search
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex-grow bg-white dark:bg-gray-900 overflow-y-auto"
+    style="margin: 15px; transition: width 0.8s"
+  >
+    <div
+      class="sm:px-7 sm:py-4 px-4 py-2 flex flex-col w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 sticky top-0 z-10"
+    >
+      <div class="flex w-full items-center">
+        <div
+          class="flex items-center text-2xl text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-600 font-semibold"
+        >
+          <div
+            class="flex text-xs cursor-pointer inline-block py-2 px-2 mr-6 leading-noner whitespace-nowrap align-baseline font-bold bg-gradient-to-br from-green-500 to-cyan-600 text-white rounded"
+            (click)="toggleFilterDrawer()"
+          >
+            <i
+              nz-icon
+              nzType="left"
+              nzTheme="outline"
+              *ngIf="filterDrawerVisible"
+            ></i>
+            <i
+              nz-icon
+              nzType="right"
+              nzTheme="outline"
+              *ngIf="!filterDrawerVisible"
+            ></i>
+          </div>
+          Orders Management
+          <span *ngIf="dataTotalCount" class="ml-2"
+            >({{ dataTotalCount }})</span
+          >
+        </div>
+      </div>
+    </div>
+    <div
+      class="sm:p-5 p-3 shadow border-b border-t border-gray-200 table-scroll"
+      style="overflow: scroll"
+      [style.height]="topMenuStatus ? '77vh' : '83vh'"
+      [style.transition]="topMenuStatus ? 'height 1s' : 'none'"
+    >
+      <div class="flex flex-col">
+        <div class="align-middle inline-block min-w-full">
+          <div class="shadow border-b border-t border-gray-200">
+            <nz-table
+              class="min-w-full divide-y divide-gray-200"
+              #eventsTable
+              [nzData]="dataList"
+              [nzTotal]="dataTotalCount"
+              [nzLoading]="dataLoading"
+              [nzShowPagination]="false"
+              [(nzPageSize)]="pageSize"
+              [nzLoadingIndicator]="loadingTemplate"
+              [nzNoResult]="noResultTemplate"
+            >
+              <ng-template #loadingTemplate>
+                <i
+                  class="fas fa-sync text-xl fa-spin mr-1 text-green-400 mt-3"
+                ></i>
+              </ng-template>
+              <ng-template #noResultTemplate>
+                <i
+                  class="fas fa-exclamation-triangle text-2xl mr-1 text-green-400 mt-2.5"
+                ></i>
+                <h2 class="mt-2.5">No Data Found</h2>
+              </ng-template>
+
+              <thead>
+                <tr
+                  class="text-white bg-gradient-to-r from-green-500 to-blue-500 text-center"
+                >
+                  <th
+                    style="border-top-left-radius: 10px; min-width: 0"
+                    class="text-left"
+                  >
+                    #
+                  </th>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Rating</th>
+                  <th style="border-top-right-radius: 10px">Details</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <ng-container
+                  *ngFor="let data of eventsTable.data; let i = index"
+                >
+                  <tr [class.bg-gray-100]="i % 2 === 0">
+                    <td class="text-left text-primary font-semibold">
+                      {{ i + 1 + (pageIndex - 1) * pageSize }}.
+                    </td>
+                    <td>{{ data?.product?.product?.productName }}</td>
+                    <td>{{ data?.price }}</td>
+                    <td>{{ data?.quantity }}</td>
+                    <td>{{ data?.user?.phone }}</td>
+                    <td>{{ data?.user?.email }}</td>
+                    <td
+                      class="sm:p-3 py-2 px-1 border-b border-gray-200 dark:border-gray-800"
+                    >
+                      <span
+                        *ngIf="data.status"
+                        style="min-width: 100px"
+                        class="transform motion-safe:hover:scale-110 bg-gradient-to-br from-teal-400 to-blue-500 inline-block py-1 px-2 leading-none text-center whitespace-nowrap align-baseline font-semibold text-white rounded text-xs"
+                      >
+                        {{data?.orderStatus}}
+                      </span>
+                    </td>
+                    <td class="sm:p-3 py-2 px-1 border-b border-gray-200 dark:border-gray-800">
+                      <ng-container *ngIf="data?.rating else emptyBlock">
+                        {{data?.rating?.rating}}
+                      </ng-container>
+                    </td>
+                    <td>
+                      <div #detailView>
+                        <a
+                          class="relative cursor-pointer transform motion-safe:hover:scale-110 bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-br inline-block py-1 px-4 leading-none text-center whitespace-nowrap align-baseline font-semibold text-white rounded text-xs hover:text-white"
+                          (click)="openDetails(data)"
+                        >
+                          <i
+                            nz-icon
+                            nzType="eye"
+                            nzTheme="outline"
+                            class="absolute"
+                            style="left: 0.5rem"
+                          ></i>
+                          <span style="margin-left: 0.7rem">View Details</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </div>
+
+      <div class="py-6 flex justify-center">
+        <nz-pagination
+          [nzPageIndex]="pageIndex"
+          [nzTotal]="dataTotalCount"
+          nzShowSizeChanger
+          [nzPageSizeOptions]="[10, 20, 50, 100]"
+          [nzPageSize]="pageSize"
+          (nzPageIndexChange)="pageIndexChanged($event)"
+          (nzPageSizeChange)="pageSizeChanged($event)"
+        ></nz-pagination>
+      </div>
+
+      <ng-template #elseTemplate>
+        <span
+          style="background: rgb(254 205 211)"
+          class="ml-3 inline-block py-1 px-3 leading-none text-center whitespace-nowrap align-baseline font-semibold text-gray-700 rounded-lg"
+        >
+          Empty
+        </span>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<nz-modal
+  *ngIf="detailsVisible"
+  [(nzVisible)]="detailsVisible"
+  [nzTitle]="'Order Detail'"
+  [nzFooter]="null"
+  [nzMaskClosable]="false"
+  [nzWidth]="1400"
+  (nzOnCancel)="detailsVisible = false"
+>
+  <ng-container *nzModalContent>
+    <section class="fieldset my-10">
+      <h1 class="legend">Product Information</h1>
+
+      <div class="grid grid-cols-12 p-10">
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Product Images</label>
+        </div>
+        <div class="col-span-10 my-3">
+          <div class="bg-white border border-gray-300 dark:border-gray-700 dark:text-white w-full text-xs rounded-md">
+            <div class="picker relative px-4" style="min-height: 10rem;">
+              <div *ngFor="let photo of detailData?.product?.product?.productImages; let i = index" class="mx-4 my-2">
+                <div class="avatar">
+                  <img [src]="photo" alt="" class="image" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Product Name</label>
+        </div>
+        <div class="col-span-10 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.product?.product?.productName}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Product Brand</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.product?.product?.productBrand}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Product Price</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.product?.product?.price}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Total Price</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.price}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Ordered Quantity</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.quantity}}</label>
+        </div>
+      </div>
+    </section>
+    <section class="fieldset my-10">
+      <h1 class="legend">User Information</h1>
+
+      <div class="grid grid-cols-12 p-10">
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Username</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.user?.username}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Email</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.user?.email}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Phone</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.user?.phone}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Address Type</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.user?.deliverAddress?.addressType}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Province</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.user?.deliverAddress?.province}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">City</label>
+        </div>
+        <div class="col-span-4 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.user?.deliverAddress?.city}}</label>
+        </div>
+        <div class="col-span-2 flex items-center my-3 px-8">
+          <label class="form-control-label text-sm text-gray-700 font-semibold">Address</label>
+        </div>
+        <div class="col-span-10 my-3">
+          <label class="form-control-label text-sm text-gray-700">{{detailData?.user?.deliverAddress?.address}}</label>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-12">
+      <div class="col-span-10 mt-4 mb-2"></div>
+      <div class="col-span-2 mt-4 mb-2">
+        <button
+          *ngIf="detailData?.orderStatus === 'Pending'"
+          type="button"
+          style="
+            padding: 0.5rem;
+            border: 1px solid #e97ba0;
+            box-shadow: -1px 1px 5px 0px rgb(87 114 122);
+          "
+          class="transform motion-safe:hover:scale-110 font-semibold w-full h-10 text-white bg-gradient-to-r from-pink-500 to-orange-400 hover:bg-gradient-to-l focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-xs px-10 py-2 text-center"
+          (click)="changeStatus(detailData, 'In Progress')"
+        >
+          <span *ngIf="dataLoading">
+            <i nz-icon [nzType]="'loading'"></i>
+          </span>
+          <span>Deliver Product</span>
+        </button>
+        <button
+          *ngIf="detailData?.orderStatus === 'In Progress'"
+          type="button"
+          style="
+            padding: 0.5rem;
+            border: 1px solid #e97ba0;
+            box-shadow: -1px 1px 5px 0px rgb(87 114 122);
+          "
+          class="transform motion-safe:hover:scale-110 font-semibold w-full h-10 text-white bg-gradient-to-r from-pink-500 to-orange-400 hover:bg-gradient-to-l focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-xs px-10 py-2 text-center"
+          (click)="changeStatus(detailData, 'Complete')"
+        >
+          <span *ngIf="dataLoading">
+            <i nz-icon [nzType]="'loading'"></i>
+          </span>
+          <span>Complete Product</span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>
+
+<ng-template #emptyBlock>---</ng-template>

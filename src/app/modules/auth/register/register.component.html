@@ -1,0 +1,83 @@
+<div class="body-login">
+  <div class="main" style="height: unset; max-width: 700px;">
+    <input type="checkbox" id="chk" />
+
+    <div class="signup p-8 relative w-full h-full flex justify-center items-center">
+      <form [formGroup]="signupForm" class="sign-form validate-form w-full h-full p-8">
+        <label for="chk" class="sig mb-4">
+          <div style="width: 350px">
+            <img src="/assets/images/ebazar.svg" />
+          </div>
+        </label>
+
+        <h4 class="text-2xl font-bold text-gray-500 text-center mb-4">
+          Seller Panel&nbsp;
+          <span style="color: #dd135b;">Register</span>
+        </h4>
+
+        <div class="sig divider" style="margin: 0 auto 45px;"></div>
+
+        <div class="user-box">
+          <input
+            required
+            type="text"
+            formControlName="username"
+            title="Please Enter Username!"
+          />
+          <label>Username</label>
+        </div>
+        <div class="user-box">
+          <input
+            required
+            type="text"
+            formControlName="email"
+            title="Please Enter Email!"
+          />
+          <label>Email</label>
+        </div>
+        <div class="user-box">
+          <input
+            required
+            type="text"
+            formControlName="phone"
+            title="Please Enter Phone!"
+          />
+          <label>Phone</label>
+        </div>
+        <div class="user-box">
+          <input
+            required
+            type="password"
+            formControlName="password"
+            title="Please Enter Password!"
+          />
+          <label>Password</label>
+        </div>
+        <div class="user-box">
+          <textarea
+            required
+            rows="4"
+            formControlName="address"
+            title="Enter Address!"
+          ></textarea>
+          <label>Address</label>
+        </div>
+
+        <button class="login-btn" [disabled]="!signupForm.valid" (click)="login()">
+          <span>
+            <i *ngIf="loading" class="fas fa-sync fa-spin mr-1"></i>
+            Signup
+          </span>
+          <div class="liquid"></div>
+        </button>
+
+        <div class="sig divider" style="margin: 35px auto 25px;"></div>
+
+        <div class="text-center text-gray-500 font-semibold">
+          <span>Already have an Account?&nbsp;&nbsp;</span>
+          <a routerLink="/" class="font-bold text-center" style="color: #dd135b;">Login!</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
